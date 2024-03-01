@@ -24,7 +24,7 @@ spec:
         - CreateNamespace=true
       project: default
       source:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/argoproj/argocd-example-apps.git
         targetRevision: HEAD
         path: guestbook
       destination:
