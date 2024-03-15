@@ -1,0 +1,10 @@
+---
+appName: poc-2
+userGivenName: poc-2
+destNamespace: default
+destServer: https://kubernetes.default.svc
+srcPath: kustomize/poc-2
+srcRepoURL: https://GIT-SERVER-URL/ORG/REPO.git
+srcTargetRevision: 'main'
+labels:
+annotations:

@@ -1,0 +1,50 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+resources:
+  - namespace-argocd.yaml
+  - install.yaml
+  - secret-gitops-secret.yaml
+  - ingress-argocd-server-ingress.yaml
+  - secret-dex-config.yaml
+configMapGenerator:
+  - name: argocd-cm
+    behavior: merge
+    literals:
+      - "timeout.reconciliation=15s"
+  - behavior: merge
+    literals:
+      - |
+        repository.credentials=- passwordSecret:
+            key: git_token
+            name: gitops-secret
+          url: https://GIT-SERVER-URL/
+          usernameSecret:
+            key: git_username
+            name: gitops-secret
+    name: argocd-cm
+patchesStrategicMerge:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      labels:
+        app.kubernetes.io/name: argocd-cm
+        app.kubernetes.io/part-of: argocd
+      name: argocd-cm
+    data:
+      url: https://argocd.internal.REMPLACE_WITH_YOUR_DOMAIN
+      oidc.config: |
+        requestedIDTokenClaims:
+          groups:
+            essential: true
+            value: org:estrafalario
+        name: fury-dex
+        issuer: https://login.REMPLACE_WITH_YOUR_DOMAIN
+        clientID: oidc-dex-argocd
+        clientSecret: $dex-config:oidc.clientSecret
+        scopes:
+          - profile
+          - email
+          - groups

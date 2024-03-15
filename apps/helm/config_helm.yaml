@@ -1,0 +1,11 @@
+---
+appName: poc-1
+labels:
+annotations:
+userGivenName: poc-1
+destNamespace: poc-1
+destServer: https://kubernetes.default.svc
+srcRepoPath: helm/app
+srcRepoURL: https://GIT-SERVER-URL/ORG/REPO.git
+srcTargetRevision: 'main'
+valueFiles: 'values-poc-1.yaml'
